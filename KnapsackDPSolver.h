@@ -13,21 +13,19 @@
 
 #include "knapsack.h"
 
+/// Provides a solution for a 0/1 Knapsack Problem, using Dynamic Programming.
+///
 class KnapsackDPSolver {
 private:
   KnapsackInstance *instance;
   KnapsackSolution *solution;
 
-  /// A 2-D array of dimensions ItemCount+1 x Capacity+1.
-  /// Each cell stores the optimal solution for the capacity and item count
-  /// indicated by its row and column.
-  /// For example, `solutionTable[3][5]` will store the optimal solution for
-  /// a 0/1 knapsack problem with capacity 3 and item count 5.
-  std::vector<std::vector<KnapsackSolution>> solutionTable;
-
 public:
   KnapsackDPSolver() : instance(nullptr), solution(nullptr) {}
 
+  /// Solve a 0/1 Knapsack Problem using Dynamic Programming.
+  /// \param instance The 0/1 Knapsack Problem to be solved
+  /// \param [out] solution The solution to the 0/1 Knapsack Problem
   void Solve(KnapsackInstance *instance, KnapsackSolution *solution);
 };
 

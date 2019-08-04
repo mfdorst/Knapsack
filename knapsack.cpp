@@ -20,7 +20,7 @@
 #define TIMEB struct timeb
 #define FTIME ftime
 #define UDT_TIME long
-#define MAX_SIZE_TO_PRINT 10
+#define MAX_SIZE_TO_PRINT 50
 
 UDT_TIME gRefTime = 0;
 
