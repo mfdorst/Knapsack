@@ -311,16 +311,14 @@ void KnapsackBFSolver::CheckCrntSoln() {
   if (crntVal == INVALID_VALUE)
     return;
 
-  if (bestSoln->GetValue() ==
-      INVALID_VALUE) // The first solution is initially the best solution
+  // The first solution is initially the best solution
+  if (bestSoln->GetValue() == INVALID_VALUE)
     bestSoln->Copy(crntSoln);
   else {
     if (crntVal > bestSoln->GetValue())
       bestSoln->Copy(crntSoln);
   }
 }
-
-//===-- KnapsackDPSolver --------------------------------------------------===//
 
 // Write code below to implement the DP solver, the backtracking (BT) solver
 // and the Branch-and-Bound (BB) solver.
@@ -331,16 +329,32 @@ void KnapsackBFSolver::CheckCrntSoln() {
 // See how the given KnapsackBFSolver::Solve() writes its result into the
 // KnapsackSolution object and make the solvers that you write do the same.
 
+//===-- Dynamic Programming Solver ----------------------------------------===//
+
 void KnapsackDPSolver::Solve(KnapsackInstance *instance_,
                              KnapsackSolution *solution_) {
+
   instance = instance_;
   solution = solution_;
+
+  size_t itemCount = instance->GetItemCnt();
+  size_t capacity = instance->GetCapacity();
+
+  // Initialize solutionTable as a 2D ItemCount x Capacity matrix of empty
+  // solutions
+  solutionTable = std::move(std::vector<std::vector<KnapsackSolution>>(
+      itemCount,
+      std::vector<KnapsackSolution>(capacity, KnapsackSolution(instance))));
+
+  // Initialize the first row of solutions to 0
 }
+
+//===-- Backtracking Solver -----------------------------------------------===//
 
 void KnapsackBTSolver::Solve(KnapsackInstance *instance_,
                              KnapsackSolution *solution_) {}
 
-//===-- KnapsackBBSolver --------------------------------------------------===//
+//===-- Branch and Bound Solver -------------------------------------------===//
 
 KnapsackBBSolver::KnapsackBBSolver(enum UPPER_BOUND ub_) { ub = ub_; }
 

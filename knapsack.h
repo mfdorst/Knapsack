@@ -9,6 +9,7 @@
 //===----------------------------------------------------------------------===//
 
 #include <string>
+#include <vector>
 
 //#define KNAPSACK_DEBUG
 
@@ -85,11 +86,17 @@ private:
   KnapsackInstance *instance;
   KnapsackSolution *solution;
 
-public:
-  KnapsackDPSolver() = default;
-  ~KnapsackDPSolver() = default;
+  /// A 2-D array of dimensions ItemCount+1 x Capacity+1.
+  /// Each cell stores the optimal solution for the capacity and item count
+  /// indicated by its row and column.
+  /// For example, `solutionTable[3][5]` will store the optimal solution for
+  /// a 0/1 knapsack problem with capacity 3 and item count 5.
+  std::vector<std::vector<KnapsackSolution>> solutionTable;
 
-  void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
+public:
+  KnapsackDPSolver() : instance(nullptr), solution(nullptr) {}
+
+  void Solve(KnapsackInstance *instance, KnapsackSolution *solution);
 };
 
 //===-- Backtracking Solver -----------------------------------------------===//
