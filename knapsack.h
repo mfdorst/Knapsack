@@ -91,17 +91,6 @@ public:
   virtual void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
 };
 
-//===-- Backtracking Solver -----------------------------------------------===//
-
-class KnapsackBTSolver : public KnapsackBFSolver {
-
-public:
-  KnapsackBTSolver() = default;
-  ~KnapsackBTSolver() = default;
-
-  void Solve(KnapsackInstance *inst, KnapsackSolution *soln) override;
-};
-
 //===-- Branch and Bound Solver -------------------------------------------===//
 
 class KnapsackBBSolver : public KnapsackBFSolver {
