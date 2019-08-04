@@ -1,6 +1,6 @@
 //===-- knapsack.cpp - 0/1 Knapsack Problem solver ------------------------===//
 //
-// Author: Michael Dorst
+// Authors: Ghassan Shobaki, Michael Dorst
 //
 //===----------------------------------------------------------------------===//
 /// \file

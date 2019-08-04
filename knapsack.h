@@ -1,6 +1,6 @@
 //===-- knapsack.h - 0/1 Knapsack Problem solver ----------------*- C++ -*-===//
 //
-// Author: Michael Dorst
+// Authors: Ghassan Shobaki, Michael Dorst
 //
 //===----------------------------------------------------------------------===//
 /// \file
@@ -15,6 +15,8 @@
 #define INVALID_VALUE -1
 
 enum UPPER_BOUND { UB1, UB2, UB3 };
+
+//===-- Knapsack Instance -------------------------------------------------===//
 
 class KnapsackInstance {
 private:
@@ -35,6 +37,8 @@ public:
   int GetCapacity();
   void Print();
 };
+
+//===-- Knapsack Solution -------------------------------------------------===//
 
 class KnapsackSolution {
 private:
@@ -57,19 +61,8 @@ public:
   void Copy(KnapsackSolution *otherSoln);
 };
 
-// Dynamic programming solver
-class KnapsackDPSolver {
-private:
-  KnapsackInstance *inst;
-  KnapsackSolution *soln;
+//===-- Brute Force Solver ------------------------------------------------===//
 
-public:
-  KnapsackDPSolver();
-  ~KnapsackDPSolver();
-  void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
-};
-
-// Brute-force solver
 class KnapsackBFSolver {
 protected:
   KnapsackInstance *inst;
@@ -85,6 +78,22 @@ public:
   virtual void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
 };
 
+//===-- Dynamic Programming Solver ----------------------------------------===//
+
+// Dynamic programming solver
+class KnapsackDPSolver {
+private:
+  KnapsackInstance *inst;
+  KnapsackSolution *soln;
+
+public:
+  KnapsackDPSolver();
+  ~KnapsackDPSolver();
+  void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
+};
+
+//===-- Backtracking Solver -----------------------------------------------===//
+
 // Backtracking solver
 class KnapsackBTSolver : public KnapsackBFSolver {
 
@@ -93,6 +102,8 @@ public:
   ~KnapsackBTSolver();
   void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
 };
+
+//===-- Branch and Bound Solver -------------------------------------------===//
 
 // Branch-and-Bound solver
 class KnapsackBBSolver : public KnapsackBFSolver {
