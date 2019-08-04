@@ -14,100 +14,91 @@
 
 enum UPPER_BOUND { UB1, UB2, UB3 };
 
-class KnapsackInstance
-{
+class KnapsackInstance {
 private:
-	int itemCnt; //Number of items
-	int cap; //The capacity
-	int* weights;//An array of weights
-	int* values;//An array of values
+  int itemCnt;  // Number of items
+  int cap;      // The capacity
+  int *weights; // An array of weights
+  int *values;  // An array of values
 
 public:
-	KnapsackInstance(int itemCnt_);
-	~KnapsackInstance();
+  KnapsackInstance(int itemCnt_);
+  ~KnapsackInstance();
 
-	void Generate();
+  void Generate();
 
-	int GetItemCnt();
-	int GetItemWeight(int itemNum);
-	int GetItemValue(int itemNum);
-	int GetCapacity();
-	void Print();
+  int GetItemCnt();
+  int GetItemWeight(int itemNum);
+  int GetItemValue(int itemNum);
+  int GetCapacity();
+  void Print();
 };
 
-class KnapsackSolution
-{
+class KnapsackSolution {
 private:
-	bool* isTaken;
-	int value;
-	int wght;
-	KnapsackInstance* inst;
+  bool *isTaken;
+  int value;
+  int wght;
+  KnapsackInstance *inst;
 
 public:
-	KnapsackSolution(KnapsackInstance* inst);
-	~KnapsackSolution();
+  KnapsackSolution(KnapsackInstance *inst);
+  ~KnapsackSolution();
 
-	bool operator == (KnapsackSolution& otherSoln);
-	void TakeItem(int itemNum);
-	void DontTakeItem(int itemNum);
-	int ComputeValue();
-	int GetValue();
-	int GetWeight();
-	void Print(std::string str);
-	void Copy(KnapsackSolution* otherSoln);
+  bool operator==(KnapsackSolution &otherSoln);
+  void TakeItem(int itemNum);
+  void DontTakeItem(int itemNum);
+  int ComputeValue();
+  int GetValue();
+  int GetWeight();
+  void Print(std::string str);
+  void Copy(KnapsackSolution *otherSoln);
 };
 
 // Dynamic programming solver
-class KnapsackDPSolver
-{
+class KnapsackDPSolver {
 private:
-	KnapsackInstance* inst;
-	KnapsackSolution* soln;
+  KnapsackInstance *inst;
+  KnapsackSolution *soln;
 
 public:
-	KnapsackDPSolver();
-	~KnapsackDPSolver();
-	void Solve(KnapsackInstance* inst, KnapsackSolution* soln);
+  KnapsackDPSolver();
+  ~KnapsackDPSolver();
+  void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
 };
-
 
 // Brute-force solver
-class KnapsackBFSolver
-{
+class KnapsackBFSolver {
 protected:
-	KnapsackInstance* inst;
-	KnapsackSolution* crntSoln;
-	KnapsackSolution* bestSoln;
+  KnapsackInstance *inst;
+  KnapsackSolution *crntSoln;
+  KnapsackSolution *bestSoln;
 
-	virtual void FindSolns(int itemNum);
-	virtual void CheckCrntSoln();
+  virtual void FindSolns(int itemNum);
+  virtual void CheckCrntSoln();
 
 public:
-	KnapsackBFSolver();
-	~KnapsackBFSolver();
-	virtual void Solve(KnapsackInstance* inst, KnapsackSolution* soln);
+  KnapsackBFSolver();
+  ~KnapsackBFSolver();
+  virtual void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
 };
 
-
 // Backtracking solver
-class KnapsackBTSolver: public KnapsackBFSolver
-{
+class KnapsackBTSolver : public KnapsackBFSolver {
 
 public:
-	KnapsackBTSolver();
-	~KnapsackBTSolver();
-	void Solve(KnapsackInstance* inst, KnapsackSolution* soln);
+  KnapsackBTSolver();
+  ~KnapsackBTSolver();
+  void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
 };
 
 // Branch-and-Bound solver
-class KnapsackBBSolver: public KnapsackBFSolver
-{
+class KnapsackBBSolver : public KnapsackBFSolver {
 protected:
-enum UPPER_BOUND ub;
+  enum UPPER_BOUND ub;
 
 public:
-	KnapsackBBSolver(enum UPPER_BOUND ub_);
-	~KnapsackBBSolver();
-	void Solve(KnapsackInstance* inst, KnapsackSolution* soln);
+  KnapsackBBSolver(enum UPPER_BOUND ub_);
+  ~KnapsackBBSolver();
+  void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
 };
-
