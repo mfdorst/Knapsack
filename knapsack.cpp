@@ -72,6 +72,7 @@ int main(int argc, char *argv[]) {
     DPSoln->Print("Dynamic Programming Solution");
 
   SetTime();
+  BFSolver.SetDuration(std::chrono::seconds(3));
   BFSolver.Solve(inst, BFSoln);
   BFTime = time = GetTime();
   printf("\n\nSolved using brute-force enumeration (BF) in %ld ms. Optimal "
@@ -282,6 +283,8 @@ KnapsackBFSolver::~KnapsackBFSolver() {
 }
 
 void KnapsackBFSolver::Solve(KnapsackInstance *inst_, KnapsackSolution *soln_) {
+
+  startTime = std::chrono::high_resolution_clock::now();
   inst = inst_;
   bestSoln = soln_;
   crntSoln = new KnapsackSolution(inst);
@@ -291,7 +294,11 @@ void KnapsackBFSolver::Solve(KnapsackInstance *inst_, KnapsackSolution *soln_) {
 void KnapsackBFSolver::FindSolns(int itemNum) {
   int itemCnt = inst->GetItemCnt();
 
-  if (itemNum == itemCnt + 1) {
+  auto currentTime = std::chrono::high_resolution_clock::now();
+
+  auto duration = currentTime - startTime;
+
+  if (itemNum == itemCnt + 1 || duration > maxDuration) {
     CheckCrntSoln();
     return;
   }

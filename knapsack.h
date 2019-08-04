@@ -13,6 +13,7 @@
 
 #include <string>
 #include <vector>
+#include <chrono>
 
 //#define KNAPSACK_DEBUG
 
@@ -72,6 +73,8 @@ protected:
   KnapsackInstance *inst;
   KnapsackSolution *crntSoln;
   KnapsackSolution *bestSoln;
+  std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
+  std::chrono::duration<uint32_t> maxDuration;
 
   virtual void FindSolns(int itemNum);
   virtual void CheckCrntSoln();
@@ -79,6 +82,12 @@ protected:
 public:
   KnapsackBFSolver();
   ~KnapsackBFSolver();
+
+  /// Set the duration to run in milliseconds
+  virtual void SetDuration(std::chrono::duration<uint32_t> duration) {
+    maxDuration = duration;
+  }
+
   virtual void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
 };
 
