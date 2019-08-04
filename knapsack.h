@@ -80,38 +80,39 @@ public:
 
 //===-- Dynamic Programming Solver ----------------------------------------===//
 
-// Dynamic programming solver
 class KnapsackDPSolver {
 private:
-  KnapsackInstance *inst;
-  KnapsackSolution *soln;
+  KnapsackInstance *instance;
+  KnapsackSolution *solution;
 
 public:
-  KnapsackDPSolver();
-  ~KnapsackDPSolver();
+  KnapsackDPSolver() = default;
+  ~KnapsackDPSolver() = default;
+
   void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
 };
 
 //===-- Backtracking Solver -----------------------------------------------===//
 
-// Backtracking solver
 class KnapsackBTSolver : public KnapsackBFSolver {
 
 public:
-  KnapsackBTSolver();
-  ~KnapsackBTSolver();
-  void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
+  KnapsackBTSolver() = default;
+  ~KnapsackBTSolver() = default;
+
+  void Solve(KnapsackInstance *inst, KnapsackSolution *soln) override;
 };
 
 //===-- Branch and Bound Solver -------------------------------------------===//
 
-// Branch-and-Bound solver
 class KnapsackBBSolver : public KnapsackBFSolver {
 protected:
   enum UPPER_BOUND ub;
 
 public:
-  KnapsackBBSolver(enum UPPER_BOUND ub_);
-  ~KnapsackBBSolver();
-  void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
+  explicit KnapsackBBSolver(enum UPPER_BOUND ub_);
+
+  ~KnapsackBBSolver() = default;
+
+  void Solve(KnapsackInstance *inst, KnapsackSolution *soln) override;
 };

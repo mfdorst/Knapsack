@@ -331,32 +331,21 @@ void KnapsackBFSolver::CheckCrntSoln() {
 // See how the given KnapsackBFSolver::Solve() writes its result into the
 // KnapsackSolution object and make the solvers that you write do the same.
 
-KnapsackDPSolver::KnapsackDPSolver() {}
-
-KnapsackDPSolver::~KnapsackDPSolver() {}
-
-void KnapsackDPSolver::Solve(KnapsackInstance *inst_, KnapsackSolution *soln_) {
-  inst = inst_;
-  soln = soln_;
+void KnapsackDPSolver::Solve(KnapsackInstance *instance_,
+                             KnapsackSolution *solution_) {
+  instance = instance_;
+  solution = solution_;
 }
 
-KnapsackBTSolver::KnapsackBTSolver() {}
-
-KnapsackBTSolver::~KnapsackBTSolver() {}
-
-void KnapsackBTSolver::Solve(KnapsackInstance *inst_, KnapsackSolution *soln_) {
-
-}
+void KnapsackBTSolver::Solve(KnapsackInstance *instance_,
+                             KnapsackSolution *solution_) {}
 
 //===-- KnapsackBBSolver --------------------------------------------------===//
 
 KnapsackBBSolver::KnapsackBBSolver(enum UPPER_BOUND ub_) { ub = ub_; }
 
-KnapsackBBSolver::~KnapsackBBSolver() {}
-
-void KnapsackBBSolver::Solve(KnapsackInstance *inst_, KnapsackSolution *soln_) {
-
-}
+void KnapsackBBSolver::Solve(KnapsackInstance *instance_,
+                             KnapsackSolution *solution_) {}
 
 //===-- Time related functions --------------------------------------------===//
 
