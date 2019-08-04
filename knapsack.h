@@ -8,6 +8,8 @@
 /// to solving the 0/1 knapsack problem.
 //===----------------------------------------------------------------------===//
 
+#include <string>
+
 //#define KNAPSACK_DEBUG
 
 #define INVALID_VALUE -1
