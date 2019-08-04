@@ -296,9 +296,7 @@ void KnapsackBFSolver::Solve(KnapsackInstance *inst_, KnapsackSolution *soln_) {
 void KnapsackBFSolver::FindSolns(int itemNum) {
   int itemCnt = inst->GetItemCnt();
 
-  auto currentTime = getTime();
-
-  auto duration = currentTime - startTime;
+  auto duration = timeSince(startTime);
 
   if (itemNum == itemCnt + 1 || duration > maxDuration) {
     CheckCrntSoln();
