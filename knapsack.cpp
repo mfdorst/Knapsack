@@ -1,3 +1,13 @@
+//===-- knapsack.cpp - 0/1 Knapsack Problem solver ------------------------===//
+//
+// Author: Michael Dorst
+//
+//===----------------------------------------------------------------------===//
+/// \file
+/// This file contains the definitions of all classes and functions pertaining
+/// to solving the 0/1 knapsack problem.
+//===----------------------------------------------------------------------===//
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -134,7 +144,8 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-/********************************************************************/
+
+//===-- KnapsackInstance --------------------------------------------------===//
 
 KnapsackInstance::KnapsackInstance(int itemCnt_)
 {
@@ -144,14 +155,12 @@ KnapsackInstance::KnapsackInstance(int itemCnt_)
 	values = new int[itemCnt+1];
 	cap = 0;
 }
-/********************************************************************/
 	
 KnapsackInstance::~KnapsackInstance()
 {
 	delete [] weights;
 	delete [] values;
 }
-/********************************************************************/
 
 void KnapsackInstance::Generate()
 {
@@ -169,31 +178,26 @@ void KnapsackInstance::Generate()
     }
     cap = wghtSum/2;
 }
-/********************************************************************/
 
 int KnapsackInstance::GetItemCnt()
 {
 	return itemCnt;
 }
-/********************************************************************/
 
 int KnapsackInstance::GetItemWeight(int itemNum)
 {
 	return weights[itemNum];
 }
-/********************************************************************/
 
 int KnapsackInstance::GetItemValue(int itemNum)
 {
 	return values[itemNum];
 }
-/********************************************************************/
 
 int KnapsackInstance::GetCapacity()
 {
 	return cap;
 }
-/********************************************************************/
 
 void KnapsackInstance::Print()
 {
@@ -212,7 +216,8 @@ void KnapsackInstance::Print()
 	}
 	printf("\n");
 }
-/*****************************************************************************/
+
+//===-- KnapsackSolution --------------------------------------------------===//
 
 KnapsackSolution::KnapsackSolution(KnapsackInstance* inst_)
 {
@@ -227,31 +232,26 @@ KnapsackSolution::KnapsackSolution(KnapsackInstance* inst_)
 		isTaken[i] = false;
 	}
 }
-/********************************************************************/
 
 KnapsackSolution::~KnapsackSolution()
 {
 	delete [] isTaken;
 }
-/********************************************************************/
 
 bool KnapsackSolution::operator == (KnapsackSolution& otherSoln)
 {
 	return value == otherSoln.value;
 }
-/********************************************************************/
 
 void KnapsackSolution::TakeItem(int itemNum)
 {
 	isTaken[itemNum] = true;
 }
-/********************************************************************/
 	
 void KnapsackSolution::DontTakeItem(int itemNum)
 {
 	isTaken[itemNum] = false;	
 }
-/********************************************************************/
 
 int KnapsackSolution::ComputeValue()
 {
@@ -273,13 +273,11 @@ int KnapsackSolution::ComputeValue()
 	}
 	return value;
 }
-/********************************************************************/
 
 int KnapsackSolution::GetValue()
 {
 	return value;
 }
-/********************************************************************/
 
 void KnapsackSolution::Copy(KnapsackSolution* otherSoln)
 {
@@ -291,7 +289,6 @@ void KnapsackSolution::Copy(KnapsackSolution* otherSoln)
 	}
 	value = otherSoln->value;
 }
-/********************************************************************/
 
 void KnapsackSolution::Print(std::string title)
 {
@@ -306,20 +303,19 @@ void KnapsackSolution::Print(std::string title)
 	printf("\nValue = %d\n",value);
 	
 }
-/*****************************************************************************/
+
+//===-- KnapsackBFSolver --------------------------------------------------===//
 
 KnapsackBFSolver::KnapsackBFSolver()
 {
 	crntSoln = NULL;
 }
-/********************************************************************/
 
 KnapsackBFSolver::~KnapsackBFSolver()
 {
 	if(crntSoln != NULL)
 		delete crntSoln;
 }
-/********************************************************************/
 
 void KnapsackBFSolver::Solve(KnapsackInstance* inst_, KnapsackSolution* soln_)
 {
@@ -328,7 +324,6 @@ void KnapsackBFSolver::Solve(KnapsackInstance* inst_, KnapsackSolution* soln_)
 	crntSoln = new KnapsackSolution(inst);
 	FindSolns(1);
 }
-/********************************************************************/
 
 void KnapsackBFSolver::FindSolns(int itemNum)
 {
@@ -344,7 +339,6 @@ void KnapsackBFSolver::FindSolns(int itemNum)
 	crntSoln->TakeItem(itemNum);
 	FindSolns(itemNum+1);
 }
-/********************************************************************/
 
 void KnapsackBFSolver::CheckCrntSoln()
 {
@@ -366,7 +360,8 @@ void KnapsackBFSolver::CheckCrntSoln()
 			bestSoln->Copy(crntSoln);
 	}
 }
-/********************************************************************/
+
+//===-- KnapsackDPSolver --------------------------------------------------===//
 
 // Write code below to implement the DP solver, the backtracking (BT) solver
 // and the Branch-and-Bound (BB) solver. 
@@ -392,44 +387,41 @@ void KnapsackDPSolver::Solve(KnapsackInstance* inst_, KnapsackSolution* soln_)
 	inst = inst_;
 	soln = soln_;
 }
-/*****************************************************************************/
 
 KnapsackBTSolver::KnapsackBTSolver()
 {
 
 }
-/********************************************************************/
 
 KnapsackBTSolver::~KnapsackBTSolver()
 {
 
 }
-/********************************************************************/
 
 void KnapsackBTSolver::Solve(KnapsackInstance* inst_, KnapsackSolution* soln_)
 {
 
 	
 }
-/*****************************************************************************/
+
+//===-- KnapsackBBSolver --------------------------------------------------===//
 
 KnapsackBBSolver::KnapsackBBSolver(enum UPPER_BOUND ub_)
 {
 	ub = ub_;
 }
-/********************************************************************/
 
 KnapsackBBSolver::~KnapsackBBSolver()
 {
 
 }
-/********************************************************************/
 
 void KnapsackBBSolver::Solve(KnapsackInstance* inst_, KnapsackSolution* soln_)
 {
 	
 }
-/*****************************************************************************/
+
+//===-- Time related functions --------------------------------------------===//
 
 UDT_TIME GetCurrentTime(void)
 {
@@ -441,13 +433,11 @@ UDT_TIME GetCurrentTime(void)
 
 	return crntTime;
 }
-/********************************************************************/
 
 void SetTime(void)
 {
 	gRefTime = GetCurrentTime();
 }
-/********************************************************************/
 
 UDT_TIME GetTime(void)
 {
@@ -455,7 +445,6 @@ UDT_TIME GetTime(void)
 
 	return (crntTime - gRefTime);
 }
-/********************************************************************/
 
 UDT_TIME GetMilliSecondTime(TIMEB timeBuf)
 {
@@ -466,4 +455,3 @@ UDT_TIME GetMilliSecondTime(TIMEB timeBuf)
 	mliScndTime += timeBuf.millitm;
 	return mliScndTime;
 }
-/*****************************************************************************/

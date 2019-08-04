@@ -1,3 +1,12 @@
+//===-- knapsack.h - 0/1 Knapsack Problem solver ----------------*- C++ -*-===//
+//
+// Author: Michael Dorst
+//
+//===----------------------------------------------------------------------===//
+/// \file
+/// This file contains the declrations of all classes and functions pertaining
+/// to solving the 0/1 knapsack problem.
+//===----------------------------------------------------------------------===//
 
 //#define KNAPSACK_DEBUG
 
