@@ -11,9 +11,9 @@
 #ifndef KNAPSACK_H
 #define KNAPSACK_H
 
+#include <chrono>
 #include <string>
 #include <vector>
-#include <chrono>
 
 //#define KNAPSACK_DEBUG
 

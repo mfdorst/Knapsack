@@ -10,6 +10,7 @@
 
 #include "knapsack.h"
 #include "KnapsackDPSolver.h"
+#include "Time.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -284,7 +285,7 @@ KnapsackBFSolver::~KnapsackBFSolver() {
 
 void KnapsackBFSolver::Solve(KnapsackInstance *inst_, KnapsackSolution *soln_) {
 
-  startTime = std::chrono::high_resolution_clock::now();
+  startTime = getTime();
   inst = inst_;
   bestSoln = soln_;
   crntSoln = new KnapsackSolution(inst);
@@ -294,7 +295,7 @@ void KnapsackBFSolver::Solve(KnapsackInstance *inst_, KnapsackSolution *soln_) {
 void KnapsackBFSolver::FindSolns(int itemNum) {
   int itemCnt = inst->GetItemCnt();
 
-  auto currentTime = std::chrono::high_resolution_clock::now();
+  auto currentTime = getTime();
 
   auto duration = currentTime - startTime;
 
