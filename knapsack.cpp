@@ -4,11 +4,12 @@
 //
 //===----------------------------------------------------------------------===//
 /// \file
-/// This file contains the definitions of all classes and functions pertaining
+/// This file contains the definitions of classes and functions pertaining
 /// to solving the 0/1 knapsack problem.
 //===----------------------------------------------------------------------===//
 
 #include "knapsack.h"
+#include "KnapsackDPSolver.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -328,26 +329,6 @@ void KnapsackBFSolver::CheckCrntSoln() {
 // and produces an object of class KnapsackSolution as output.
 // See how the given KnapsackBFSolver::Solve() writes its result into the
 // KnapsackSolution object and make the solvers that you write do the same.
-
-//===-- Dynamic Programming Solver ----------------------------------------===//
-
-void KnapsackDPSolver::Solve(KnapsackInstance *instance_,
-                             KnapsackSolution *solution_) {
-
-  instance = instance_;
-  solution = solution_;
-
-  size_t itemCount = instance->GetItemCnt();
-  size_t capacity = instance->GetCapacity();
-
-  // Initialize solutionTable as a 2D ItemCount x Capacity matrix of empty
-  // solutions
-  solutionTable = std::move(std::vector<std::vector<KnapsackSolution>>(
-      itemCount,
-      std::vector<KnapsackSolution>(capacity, KnapsackSolution(instance))));
-
-  // Initialize the first row of solutions to 0
-}
 
 //===-- Backtracking Solver -----------------------------------------------===//
 

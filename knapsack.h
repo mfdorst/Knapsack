@@ -8,6 +8,9 @@
 /// to solving the 0/1 knapsack problem.
 //===----------------------------------------------------------------------===//
 
+#ifndef KNAPSACK_H
+#define KNAPSACK_H
+
 #include <string>
 #include <vector>
 
@@ -79,26 +82,6 @@ public:
   virtual void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
 };
 
-//===-- Dynamic Programming Solver ----------------------------------------===//
-
-class KnapsackDPSolver {
-private:
-  KnapsackInstance *instance;
-  KnapsackSolution *solution;
-
-  /// A 2-D array of dimensions ItemCount+1 x Capacity+1.
-  /// Each cell stores the optimal solution for the capacity and item count
-  /// indicated by its row and column.
-  /// For example, `solutionTable[3][5]` will store the optimal solution for
-  /// a 0/1 knapsack problem with capacity 3 and item count 5.
-  std::vector<std::vector<KnapsackSolution>> solutionTable;
-
-public:
-  KnapsackDPSolver() : instance(nullptr), solution(nullptr) {}
-
-  void Solve(KnapsackInstance *instance, KnapsackSolution *solution);
-};
-
 //===-- Backtracking Solver -----------------------------------------------===//
 
 class KnapsackBTSolver : public KnapsackBFSolver {
@@ -123,3 +106,5 @@ public:
 
   void Solve(KnapsackInstance *inst, KnapsackSolution *soln) override;
 };
+
+#endif // KNAPSACK_H
