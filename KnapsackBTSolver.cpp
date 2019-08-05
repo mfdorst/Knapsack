@@ -11,4 +11,38 @@
 #include "KnapsackBTSolver.h"
 
 void KnapsackBTSolver::Solve(KnapsackInstance *instance_,
-                             KnapsackSolution *solution_) {}
+                             KnapsackSolution *solution_) {
+
+  instance = instance_;
+  bestSolution = solution_;
+  currentSolution = new KnapsackSolution(instance);
+
+  findSolutions(0);
+}
+
+/// Find solutions recursively.
+/// Stops searching early if the solution weight exceeds the knapsack capacity.
+/// \param itemNum The item currently under consideration
+void KnapsackBTSolver::findSolutions(size_t itemNum) {
+
+  // These are static so that the getters are only invoked once
+  static size_t capacity = instance->GetCapacity();
+  static uint32_t itemCount = instance->GetItemCnt();
+
+  static uint32_t weight = 0;
+
+  if (itemNum > itemCount) {
+    int32_t currentvalue = currentSolution->ComputeValue();
+    int32_t bestValue = bestSolution->GetValue();
+
+    if (currentvalue > bestValue) {
+      bestSolution->Copy(currentSolution);
+    }
+    return;
+  }
+
+  currentSolution->TakeItem(itemNum);
+  findSolutions(itemNum + 1);
+  currentSolution->DontTakeItem(itemNum);
+  findSolutions(itemNum + 1);
+}

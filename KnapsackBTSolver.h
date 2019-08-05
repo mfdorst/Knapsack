@@ -13,13 +13,22 @@
 
 #include "knapsack.h"
 
-class KnapsackBTSolver : public KnapsackBFSolver {
+class KnapsackBTSolver {
+
+  KnapsackInstance *instance;
+  KnapsackSolution *currentSolution;
+  KnapsackSolution *bestSolution;
+  std::chrono::high_resolution_clock::time_point startTime;
+  std::chrono::duration<double> maxDuration;
+
+  void findSolutions(size_t itemNum);
 
 public:
-  KnapsackBTSolver() = default;
-  ~KnapsackBTSolver() = default;
+  KnapsackBTSolver()
+      : instance(nullptr), currentSolution(nullptr), bestSolution(nullptr),
+        maxDuration(std::chrono::seconds(3)) {}
 
-  void Solve(KnapsackInstance *inst, KnapsackSolution *soln) override;
+  void Solve(KnapsackInstance *instance, KnapsackSolution *solution);
 };
 
 #endif // KNAPSACKBTSOLVER_H
