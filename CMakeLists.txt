@@ -3,4 +3,4 @@ project(Knapsack)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Knapsack knapsack.cpp knapsack.h KnapsackDPSolver.cpp KnapsackDPSolver.h Time.h KnapsackBTSolver.cpp KnapsackBTSolver.h Time.cpp)
+add_executable(Knapsack knapsack.cpp knapsack.h KnapsackDPSolver.cpp KnapsackDPSolver.h Time.h KnapsackBTSolver.cpp KnapsackBTSolver.h Time.cpp KnapsackBBSolver.cpp KnapsackBBSolver.h)

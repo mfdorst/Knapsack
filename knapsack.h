@@ -88,18 +88,4 @@ public:
   virtual void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
 };
 
-//===-- Branch and Bound Solver -------------------------------------------===//
-
-class KnapsackBBSolver : public KnapsackBFSolver {
-protected:
-  enum UPPER_BOUND ub;
-
-public:
-  explicit KnapsackBBSolver(enum UPPER_BOUND ub_);
-
-  ~KnapsackBBSolver() = default;
-
-  void Solve(KnapsackInstance *inst, KnapsackSolution *soln) override;
-};
-
 #endif // KNAPSACK_H

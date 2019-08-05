@@ -59,7 +59,8 @@ void KnapsackBTSolver::findSolutions(size_t itemNum) {
 
   auto itemWeight = instance->GetItemWeight(itemNum);
 
-  if (weight + itemWeight > capacity) return;
+  if (weight + itemWeight > capacity)
+    return;
 
   weight += itemWeight;
 
@@ -71,4 +72,3 @@ void KnapsackBTSolver::findSolutions(size_t itemNum) {
   currentSolution->DontTakeItem(itemNum);
   findSolutions(itemNum + 1);
 }
-

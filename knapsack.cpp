@@ -9,6 +9,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "knapsack.h"
+#include "KnapsackBBSolver.h"
 #include "KnapsackBTSolver.h"
 #include "KnapsackDPSolver.h"
 #include "Time.h"
@@ -334,13 +335,6 @@ void KnapsackBFSolver::CheckCrntSoln() {
 // and produces an object of class KnapsackSolution as output.
 // See how the given KnapsackBFSolver::Solve() writes its result into the
 // KnapsackSolution object and make the solvers that you write do the same.
-
-//===-- Branch and Bound Solver -------------------------------------------===//
-
-KnapsackBBSolver::KnapsackBBSolver(enum UPPER_BOUND ub_) { ub = ub_; }
-
-void KnapsackBBSolver::Solve(KnapsackInstance *instance_,
-                             KnapsackSolution *solution_) {}
 
 //===-- Time related functions --------------------------------------------===//
 
