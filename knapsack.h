@@ -80,11 +80,6 @@ public:
   KnapsackBFSolver();
   ~KnapsackBFSolver();
 
-  /// Set the duration to run in milliseconds
-  virtual void SetDuration(std::chrono::duration<uint32_t> duration) {
-    maxDuration = duration;
-  }
-
   virtual void Solve(KnapsackInstance *inst, KnapsackSolution *soln);
 };
 

@@ -27,7 +27,7 @@ class KnapsackBTSolver {
 public:
   KnapsackBTSolver()
       : instance(nullptr), currentSolution(nullptr), bestSolution(nullptr),
-        maxDuration(std::chrono::seconds(3)), outOfTime(false) {}
+        maxDuration(std::chrono::seconds(10)), outOfTime(false) {}
 
   void Solve(KnapsackInstance *instance, KnapsackSolution *solution);
 };

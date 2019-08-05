@@ -20,52 +20,86 @@ void KnapsackBBSolver::Solve(KnapsackInstance *instance_,
   bestSolution = solution_;
   currentSolution = new KnapsackSolution(instance);
 
+  if (upperBound == UB1) {
+    maximumRemainingValue = 0;
+
+    for (size_t i = 0; i <= instance->GetItemCnt(); ++i) {
+      maximumRemainingValue += instance->GetItemValue(i);
+    }
+  }
+
   findSolutions(1);
 }
 
 void KnapsackBBSolver::findSolutions(size_t itemNum) {
 
-  // Check timeout flag
-  // We only perform time math at leaf nodes, to reduce computation
-  if (outOfTime) {
+  // If time has run out, exit early
+  if (timeSince(startTime) > maxDuration) {
     return;
   }
 
   // These are static so that the getters are only invoked once
-  static size_t capacity = instance->GetCapacity();
-  static uint32_t itemCount = instance->GetItemCnt();
+  size_t static capacity = instance->GetCapacity();
+  uint32_t static itemCount = instance->GetItemCnt();
 
-  static uint32_t weight = 0;
+  uint32_t static takenWeight = 0, takenValue = 0;
+  int32_t static bestValue = -1;
 
+  // If this is a leaf node (all items have been chosen)
   if (itemNum > itemCount) {
 
-    // Check if time has run out
-    if (timeSince(startTime) > maxDuration) {
-      outOfTime = true;
-      return;
-    }
+    // Update the best value so-far
+    int32_t currentValue = currentSolution->ComputeValue();
+    bestValue = bestSolution->GetValue();
 
-    int32_t currentvalue = currentSolution->ComputeValue();
-    int32_t bestValue = bestSolution->GetValue();
-
-    if (currentvalue > bestValue) {
+    if (currentValue > bestValue) {
       bestSolution->Copy(currentSolution);
     }
     return;
   }
 
   auto itemWeight = instance->GetItemWeight(itemNum);
+  auto itemValue = instance->GetItemValue(itemNum);
 
-  if (weight + itemWeight > capacity)
-    return;
+  if (takenWeight + itemWeight <= capacity) {
 
-  weight += itemWeight;
+    takenWeight += itemWeight;
+    takenValue += itemValue;
 
-  currentSolution->TakeItem(itemNum);
-  findSolutions(itemNum + 1);
+    currentSolution->TakeItem(itemNum);
 
-  weight -= itemWeight;
+    findSolutions(itemNum + 1);
 
-  currentSolution->DontTakeItem(itemNum);
-  findSolutions(itemNum + 1);
+    takenWeight -= itemWeight;
+    takenValue -= itemValue;
+  }
+
+  switch(upperBound) {
+  case UB1:
+    // We are chosing not to take this item
+    maximumRemainingValue -= itemValue;
+
+    // If we can't do better than the best solution found so far, backtrack
+    if (maximumRemainingValue < bestValue) {
+      maximumRemainingValue += itemValue;
+      return;
+    }
+    currentSolution->DontTakeItem(itemNum);
+    findSolutions(itemNum + 1);
+
+    maximumRemainingValue += itemValue;
+    break;
+  case UB2:
+    // TODO: Implement upper bound 2
+    currentSolution->DontTakeItem(itemNum);
+    findSolutions(itemNum + 1);
+    break;
+  case UB3:
+    // TODO: Implement upper bound 3
+    currentSolution->DontTakeItem(itemNum);
+    findSolutions(itemNum + 1);
+    break;
+  }
+
+
 }

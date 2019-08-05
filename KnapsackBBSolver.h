@@ -15,21 +15,23 @@
 
 class KnapsackBBSolver {
 protected:
-  enum UPPER_BOUND upperBound;
+  UPPER_BOUND const upperBound;
   KnapsackInstance *instance;
   KnapsackSolution *currentSolution;
   KnapsackSolution *bestSolution;
   std::chrono::high_resolution_clock::time_point startTime;
   std::chrono::duration<double> maxDuration;
-  bool outOfTime;
+
+  // Used for upper bound 1
+  int32_t maximumRemainingValue;
 
   void findSolutions(size_t itemNum);
 
 public:
-  explicit KnapsackBBSolver(enum UPPER_BOUND upperBound)
+  explicit KnapsackBBSolver(UPPER_BOUND const upperBound)
       : instance(nullptr), currentSolution(nullptr), bestSolution(nullptr),
-        maxDuration(std::chrono::seconds(3)), outOfTime(false),
-        upperBound(upperBound) {}
+        maxDuration(std::chrono::seconds(10)), upperBound(upperBound),
+        maximumRemainingValue(0) {}
 
   ~KnapsackBBSolver() = default;
 

@@ -75,7 +75,6 @@ int main(int argc, char *argv[]) {
     DPSoln->Print("Dynamic Programming Solution");
 
   SetTime();
-  BFSolver.SetDuration(std::chrono::seconds(3));
   BFSolver.Solve(inst, BFSoln);
   BFTime = time = GetTime();
   printf("\n\nSolved using brute-force enumeration (BF) in %ld ms. Optimal "
@@ -276,7 +275,9 @@ void KnapsackSolution::Print(std::string title) {
 
 //===-- KnapsackBFSolver --------------------------------------------------===//
 
-KnapsackBFSolver::KnapsackBFSolver() { crntSoln = NULL; }
+KnapsackBFSolver::KnapsackBFSolver() : maxDuration(std::chrono::seconds(10)) {
+  crntSoln = NULL;
+}
 
 KnapsackBFSolver::~KnapsackBFSolver() {
   if (crntSoln != NULL)
