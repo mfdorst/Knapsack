@@ -220,7 +220,7 @@ KnapsackSolution::KnapsackSolution(KnapsackInstance *inst_)
   int i, itemCnt = inst_->GetItemCnt();
 
   inst = inst_;
-  value = INVALID_VALUE;
+  value = 0;
 
   for (i = 1; i <= itemCnt; i++) {
     isTaken[i] = false;

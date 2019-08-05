@@ -48,10 +48,10 @@ void KnapsackBTSolver::findSolutions(size_t itemNum) {
       return;
     }
 
-    int32_t currentvalue = currentSolution->ComputeValue();
+    int32_t currentValue = currentSolution->ComputeValue();
     int32_t bestValue = bestSolution->GetValue();
 
-    if (currentvalue > bestValue) {
+    if (currentValue > bestValue) {
       bestSolution->Copy(currentSolution);
     }
     return;
@@ -59,16 +59,18 @@ void KnapsackBTSolver::findSolutions(size_t itemNum) {
 
   auto itemWeight = instance->GetItemWeight(itemNum);
 
-  if (weight + itemWeight > capacity)
-    return;
+  if (weight + itemWeight <= capacity) {
 
-  weight += itemWeight;
+    weight += itemWeight;
 
-  currentSolution->TakeItem(itemNum);
-  findSolutions(itemNum + 1);
+    currentSolution->TakeItem(itemNum);
 
-  weight -= itemWeight;
+    findSolutions(itemNum + 1);
+
+    weight -= itemWeight;
+  }
 
   currentSolution->DontTakeItem(itemNum);
+
   findSolutions(itemNum + 1);
 }
