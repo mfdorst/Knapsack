@@ -9,9 +9,12 @@
 //===----------------------------------------------------------------------===//
 
 #include "KnapsackBTSolver.h"
+#include "Time.h"
 
 void KnapsackBTSolver::Solve(KnapsackInstance *instance_,
                              KnapsackSolution *solution_) {
+
+  startTime = getTime();
 
   instance = instance_;
   bestSolution = solution_;
@@ -25,6 +28,11 @@ void KnapsackBTSolver::Solve(KnapsackInstance *instance_,
 /// \param itemNum The item currently under consideration
 void KnapsackBTSolver::findSolutions(size_t itemNum) {
 
+  // Check if time has run out
+  if (timeSince(startTime) > maxDuration) {
+    return;
+  }
+
   // These are static so that the getters are only invoked once
   static size_t capacity = instance->GetCapacity();
   static uint32_t itemCount = instance->GetItemCnt();
@@ -32,6 +40,7 @@ void KnapsackBTSolver::findSolutions(size_t itemNum) {
   static uint32_t weight = 0;
 
   if (itemNum > itemCount) {
+
     int32_t currentvalue = currentSolution->ComputeValue();
     int32_t bestValue = bestSolution->GetValue();
 
