@@ -13,16 +13,27 @@
 
 #include "knapsack.h"
 
-class KnapsackBBSolver : public KnapsackBFSolver {
+class KnapsackBBSolver {
 protected:
-  enum UPPER_BOUND ub;
+  enum UPPER_BOUND upperBound;
+  KnapsackInstance *instance;
+  KnapsackSolution *currentSolution;
+  KnapsackSolution *bestSolution;
+  std::chrono::high_resolution_clock::time_point startTime;
+  std::chrono::duration<double> maxDuration;
+  bool outOfTime;
+
+  void findSolutions(size_t itemNum);
 
 public:
-  explicit KnapsackBBSolver(enum UPPER_BOUND ub_);
+  explicit KnapsackBBSolver(enum UPPER_BOUND upperBound)
+      : instance(nullptr), currentSolution(nullptr), bestSolution(nullptr),
+        maxDuration(std::chrono::seconds(3)), outOfTime(false),
+        upperBound(upperBound) {}
 
   ~KnapsackBBSolver() = default;
 
-  void Solve(KnapsackInstance *inst, KnapsackSolution *soln) override;
+  void Solve(KnapsackInstance *instance, KnapsackSolution *solution);
 };
 
 #endif // KNAPSACKBBSOLVER_H

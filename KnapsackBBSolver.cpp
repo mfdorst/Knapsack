@@ -9,8 +9,63 @@
 //===----------------------------------------------------------------------===//
 
 #include "KnapsackBBSolver.h"
-
-KnapsackBBSolver::KnapsackBBSolver(enum UPPER_BOUND ub_) { ub = ub_; }
+#include "Time.h"
 
 void KnapsackBBSolver::Solve(KnapsackInstance *instance_,
-                             KnapsackSolution *solution_) {}
+                             KnapsackSolution *solution_) {
+
+  startTime = getTime();
+
+  instance = instance_;
+  bestSolution = solution_;
+  currentSolution = new KnapsackSolution(instance);
+
+  findSolutions(1);
+}
+
+void KnapsackBBSolver::findSolutions(size_t itemNum) {
+
+  // Check timeout flag
+  // We only perform time math at leaf nodes, to reduce computation
+  if (outOfTime) {
+    return;
+  }
+
+  // These are static so that the getters are only invoked once
+  static size_t capacity = instance->GetCapacity();
+  static uint32_t itemCount = instance->GetItemCnt();
+
+  static uint32_t weight = 0;
+
+  if (itemNum > itemCount) {
+
+    // Check if time has run out
+    if (timeSince(startTime) > maxDuration) {
+      outOfTime = true;
+      return;
+    }
+
+    int32_t currentvalue = currentSolution->ComputeValue();
+    int32_t bestValue = bestSolution->GetValue();
+
+    if (currentvalue > bestValue) {
+      bestSolution->Copy(currentSolution);
+    }
+    return;
+  }
+
+  auto itemWeight = instance->GetItemWeight(itemNum);
+
+  if (weight + itemWeight > capacity)
+    return;
+
+  weight += itemWeight;
+
+  currentSolution->TakeItem(itemNum);
+  findSolutions(itemNum + 1);
+
+  weight -= itemWeight;
+
+  currentSolution->DontTakeItem(itemNum);
+  findSolutions(itemNum + 1);
+}
