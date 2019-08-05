@@ -253,6 +253,8 @@ int KnapsackSolution::ComputeValue() {
 
 int KnapsackSolution::GetValue() { return value; }
 
+bool KnapsackSolution::GetIsTaken(int itemNum) { return isTaken[itemNum]; }
+
 void KnapsackSolution::Copy(KnapsackSolution *otherSoln) {
   int i, itemCnt = inst->GetItemCnt();
 

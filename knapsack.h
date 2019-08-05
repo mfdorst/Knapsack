@@ -49,7 +49,6 @@ class KnapsackSolution {
 private:
   std::vector<bool> isTaken;
   int value;
-  int wght;
   KnapsackInstance *inst;
 
 public:
@@ -60,7 +59,7 @@ public:
   void DontTakeItem(int itemNum);
   int ComputeValue();
   int GetValue();
-  int GetWeight();
+  bool GetIsTaken(int itemNum);
   void Print(std::string str);
   void Copy(KnapsackSolution *otherSoln);
 };
