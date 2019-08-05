@@ -20,13 +20,14 @@ class KnapsackBTSolver {
   KnapsackSolution *bestSolution;
   std::chrono::high_resolution_clock::time_point startTime;
   std::chrono::duration<double> maxDuration;
+  bool outOfTime;
 
   void findSolutions(size_t itemNum);
 
 public:
   KnapsackBTSolver()
       : instance(nullptr), currentSolution(nullptr), bestSolution(nullptr),
-        maxDuration(std::chrono::seconds(3)) {}
+        maxDuration(std::chrono::seconds(3)), outOfTime(false) {}
 
   void Solve(KnapsackInstance *instance, KnapsackSolution *solution);
 };

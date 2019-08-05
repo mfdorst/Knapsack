@@ -28,8 +28,9 @@ void KnapsackBTSolver::Solve(KnapsackInstance *instance_,
 /// \param itemNum The item currently under consideration
 void KnapsackBTSolver::findSolutions(size_t itemNum) {
 
-  // Check if time has run out
-  if (timeSince(startTime) > maxDuration) {
+  // Check timeout flag
+  // We only perform time math at leaf nodes, to reduce computation
+  if (outOfTime) {
     return;
   }
 
@@ -40,6 +41,12 @@ void KnapsackBTSolver::findSolutions(size_t itemNum) {
   static uint32_t weight = 0;
 
   if (itemNum > itemCount) {
+
+    // Check if time has run out
+    if (timeSince(startTime) > maxDuration) {
+      outOfTime = true;
+      return;
+    }
 
     int32_t currentvalue = currentSolution->ComputeValue();
     int32_t bestValue = bestSolution->GetValue();
