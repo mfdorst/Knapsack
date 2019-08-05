@@ -17,7 +17,7 @@ void KnapsackBTSolver::Solve(KnapsackInstance *instance_,
   bestSolution = solution_;
   currentSolution = new KnapsackSolution(instance);
 
-  findSolutions(0);
+  findSolutions(1);
 }
 
 /// Find solutions recursively.
