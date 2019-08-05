@@ -47,14 +47,13 @@ public:
 
 class KnapsackSolution {
 private:
-  bool *isTaken;
+  std::vector<bool> isTaken;
   int value;
   int wght;
   KnapsackInstance *inst;
 
 public:
   KnapsackSolution(KnapsackInstance *inst);
-  ~KnapsackSolution();
 
   bool operator==(KnapsackSolution &otherSoln);
   void TakeItem(int itemNum);

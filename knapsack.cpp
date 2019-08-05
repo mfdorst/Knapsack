@@ -214,19 +214,17 @@ void KnapsackInstance::Print() {
 
 //===-- KnapsackSolution --------------------------------------------------===//
 
-KnapsackSolution::KnapsackSolution(KnapsackInstance *inst_) {
+KnapsackSolution::KnapsackSolution(KnapsackInstance *inst_)
+    : isTaken(inst_->GetItemCnt() + 1) {
   int i, itemCnt = inst_->GetItemCnt();
 
   inst = inst_;
-  isTaken = new bool[itemCnt + 1];
   value = INVALID_VALUE;
 
   for (i = 1; i <= itemCnt; i++) {
     isTaken[i] = false;
   }
 }
-
-KnapsackSolution::~KnapsackSolution() { delete[] isTaken; }
 
 bool KnapsackSolution::operator==(KnapsackSolution &otherSoln) {
   return value == otherSoln.value;
