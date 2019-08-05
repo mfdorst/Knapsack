@@ -59,7 +59,6 @@ public:
   void DontTakeItem(int itemNum);
   int ComputeValue();
   int GetValue();
-  bool GetIsTaken(int itemNum);
   void Print(std::string str);
   void Copy(KnapsackSolution *otherSoln);
 };
