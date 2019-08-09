@@ -1,0 +1,38 @@
+n = 10
+------
+DP:  0 ms
+BF:  0 ms
+BT:  0 ms
+UB1: 0 ms
+UB2: 0 ms
+
+n = 20
+------
+DP:    1 ms
+BF:  154 ms
+BT:   48 ms
+UB1:   6 ms
+UB2:   5 ms
+
+n = 30
+------
+DP:    1 ms
+BF:  >10 s
+BT:  >10 s
+UB1: 6.7 s
+UB2: 6.3 s
+
+n = 40
+------
+DP:   1 ms
+BF:  >1 min
+BT:  >1 min
+UB1: >1 min
+UB2: >1 min
+
+Solved in 10 seconds
+--------------------
+DP:  Solved n = 7500 in 9.7 seconds
+BF:  Solved n = 26   in 9.3 seconds
+BT:  Solved n = 27   in 7.5 seconds
+UB1: Solved n = 30   in 6.5 seconds
