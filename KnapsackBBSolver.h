@@ -21,17 +21,21 @@ protected:
   KnapsackSolution *bestSolution;
   std::chrono::high_resolution_clock::time_point startTime;
   std::chrono::duration<double> maxDuration;
+  int32_t bestValue, takenWeight, takenValue;
 
   // Used for upper bound 1
   int32_t maximumRemainingValue;
+
+  int32_t sumRemainingValuesThatFit(size_t itemNum, uint32_t capacity);
 
   void findSolutions(size_t itemNum);
 
 public:
   explicit KnapsackBBSolver(UPPER_BOUND const upperBound)
       : instance(nullptr), currentSolution(nullptr), bestSolution(nullptr),
-        maxDuration(std::chrono::seconds(10)), upperBound(upperBound),
-        maximumRemainingValue(0) {}
+        maxDuration(std::chrono::seconds(1000)), upperBound(upperBound),
+        maximumRemainingValue(0), bestValue(0), takenWeight(0),
+        takenValue(0) {}
 
   ~KnapsackBBSolver() = default;
 

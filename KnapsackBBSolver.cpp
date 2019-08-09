@@ -20,6 +20,9 @@ void KnapsackBBSolver::Solve(KnapsackInstance *instance_,
   bestSolution = solution_;
   currentSolution = new KnapsackSolution(instance);
 
+  bestValue = -1;
+  takenValue = takenWeight = 0;
+
   if (upperBound == UB1) {
     maximumRemainingValue = 0;
 
@@ -42,9 +45,6 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
   size_t static capacity = instance->GetCapacity();
   uint32_t static itemCount = instance->GetItemCnt();
 
-  uint32_t static takenWeight = 0, takenValue = 0;
-  int32_t static bestValue = -1;
-
   // If this is a leaf node (all items have been chosen)
   if (itemNum > itemCount) {
 
@@ -54,6 +54,7 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
 
     if (currentValue > bestValue) {
       bestSolution->Copy(currentSolution);
+      bestValue = bestSolution->GetValue();
     }
     return;
   }
@@ -72,9 +73,11 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
 
     takenWeight -= itemWeight;
     takenValue -= itemValue;
+
+    currentSolution->DontTakeItem(itemNum);
   }
 
-  switch(upperBound) {
+  switch (upperBound) {
   case UB1:
     // We are chosing not to take this item
     maximumRemainingValue -= itemValue;
@@ -84,14 +87,21 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
       maximumRemainingValue += itemValue;
       return;
     }
-    currentSolution->DontTakeItem(itemNum);
     findSolutions(itemNum + 1);
 
     maximumRemainingValue += itemValue;
     break;
   case UB2:
-    // TODO: Implement upper bound 2
-    currentSolution->DontTakeItem(itemNum);
+
+  {
+    uint32_t remainingCapacity = capacity - takenWeight;
+
+    auto remaining = sumRemainingValuesThatFit(itemNum + 1, remainingCapacity);
+    if (takenValue + remaining < bestValue) {
+      return;
+    }
+  }
+
     findSolutions(itemNum + 1);
     break;
   case UB3:
@@ -100,6 +110,21 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
     findSolutions(itemNum + 1);
     break;
   }
+}
 
+int32_t
+KnapsackBBSolver::sumRemainingValuesThatFit(size_t itemNum,
+                                            uint32_t remainingCapacity) {
 
+  int32_t sum = 0;
+  size_t itemCount = instance->GetItemCnt();
+
+  for (size_t i = itemNum; i <= itemCount; ++i) {
+
+    if (instance->GetItemWeight(i) < remainingCapacity) {
+
+      sum += instance->GetItemValue(i);
+    }
+  }
+  return sum;
 }
