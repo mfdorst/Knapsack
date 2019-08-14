@@ -23,15 +23,24 @@ void KnapsackBBSolver::Solve(KnapsackInstance *instance_,
   bestValue = -1;
   takenValue = takenWeight = 0;
 
+  auto itemCount = instance->GetItemCnt();
+
+  items.reserve(itemCount);
+
+  for (int i = 0; i < itemCount; ++i) {
+
+    items.emplace_back(Item{i + 1, instance->GetItemWeight(i + 1),
+                            instance->GetItemValue(i + 1)});
+  }
+
   if (upperBound == UB1) {
     maximumRemainingValue = 0;
 
-    for (size_t i = 0; i <= instance->GetItemCnt(); ++i) {
-      maximumRemainingValue += instance->GetItemValue(i);
+    for (auto item : items) {
+      maximumRemainingValue += item.value;
     }
   }
-
-  findSolutions(1);
+  findSolutions(0);
 }
 
 void KnapsackBBSolver::findSolutions(size_t itemNum) {
@@ -46,7 +55,7 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
   uint32_t static itemCount = instance->GetItemCnt();
 
   // If this is a leaf node (all items have been chosen)
-  if (itemNum > itemCount) {
+  if (itemNum == itemCount) {
 
     // Update the best value so-far
     int32_t currentValue = currentSolution->ComputeValue();
@@ -59,22 +68,22 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
     return;
   }
 
-  auto itemWeight = instance->GetItemWeight(itemNum);
-  auto itemValue = instance->GetItemValue(itemNum);
+  auto itemWeight = items[itemNum].weight;
+  auto itemValue = items[itemNum].value;
 
   if (takenWeight + itemWeight <= capacity) {
 
     takenWeight += itemWeight;
     takenValue += itemValue;
 
-    currentSolution->TakeItem(itemNum);
+    currentSolution->TakeItem(itemNum + 1);
 
     findSolutions(itemNum + 1);
 
     takenWeight -= itemWeight;
     takenValue -= itemValue;
 
-    currentSolution->DontTakeItem(itemNum);
+    currentSolution->DontTakeItem(itemNum + 1);
   }
 
   switch (upperBound) {
@@ -106,7 +115,7 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
     break;
   case UB3:
     // TODO: Implement upper bound 3
-    currentSolution->DontTakeItem(itemNum);
+    currentSolution->DontTakeItem(itemNum + 1);
     findSolutions(itemNum + 1);
     break;
   }

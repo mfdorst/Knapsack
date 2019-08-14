@@ -14,7 +14,11 @@
 #include "knapsack.h"
 
 class KnapsackBBSolver {
-protected:
+private:
+  struct Item {
+    int itemNum, weight, value;
+  };
+
   UPPER_BOUND const upperBound;
   KnapsackInstance *instance;
   KnapsackSolution *currentSolution;
@@ -22,6 +26,7 @@ protected:
   std::chrono::high_resolution_clock::time_point startTime;
   std::chrono::duration<double> maxDuration;
   int32_t bestValue, takenWeight, takenValue;
+  std::vector<Item> items;
 
   // Used for upper bound 1
   int32_t maximumRemainingValue;
