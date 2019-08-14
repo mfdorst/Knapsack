@@ -16,7 +16,10 @@
 class KnapsackBBSolver {
 private:
   struct Item {
-    int itemNum, weight, value;
+    /// Specifies the position of this item in the original item list of the
+    /// KnapsackInstance.
+    int originalPosition;
+    int weight, value;
   };
 
   UPPER_BOUND const upperBound;
@@ -32,6 +35,7 @@ private:
   int32_t maximumRemainingValue;
 
   int32_t sumRemainingValuesThatFit(size_t itemNum, uint32_t capacity);
+  int32_t solveFractionalKnapsack(size_t itemNum, uint32_t capacity);
 
   void findSolutions(size_t itemNum);
 

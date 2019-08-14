@@ -40,6 +40,16 @@ void KnapsackBBSolver::Solve(KnapsackInstance *instance_,
       maximumRemainingValue += item.value;
     }
   }
+
+  if (upperBound == UB3) {
+
+    // Fractional knapsack requires items to be sorted by the ratio
+    // itemValue / itemWeight
+    std::sort(items.begin(), items.end(), [](Item const &a, Item const &b) {
+      return a.value / (double)a.weight > b.value / (double)b.weight;
+    });
+  }
+
   findSolutions(0);
 }
 
@@ -76,14 +86,14 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
     takenWeight += itemWeight;
     takenValue += itemValue;
 
-    currentSolution->TakeItem(itemNum + 1);
+    currentSolution->TakeItem(items[itemNum].originalPosition);
 
     findSolutions(itemNum + 1);
 
     takenWeight -= itemWeight;
     takenValue -= itemValue;
 
-    currentSolution->DontTakeItem(itemNum + 1);
+    currentSolution->DontTakeItem(items[itemNum].originalPosition);
   }
 
   switch (upperBound) {
@@ -113,9 +123,19 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
 
     findSolutions(itemNum + 1);
     break;
-  case UB3:
-    // TODO: Implement upper bound 3
-    currentSolution->DontTakeItem(itemNum + 1);
+  case UB3: {
+    uint32_t remainingCapacity = capacity - takenWeight;
+
+    auto valueUpperBound =
+        takenValue + solveFractionalKnapsack(itemNum, remainingCapacity);
+
+    if (valueUpperBound <= bestValue) {
+      int i = 3 + 4;
+      return;
+    }
+  }
+
+    currentSolution->DontTakeItem(items[itemNum].originalPosition);
     findSolutions(itemNum + 1);
     break;
   }
@@ -135,5 +155,21 @@ KnapsackBBSolver::sumRemainingValuesThatFit(size_t itemNum,
       sum += instance->GetItemValue(i);
     }
   }
+  return sum;
+}
+
+int32_t KnapsackBBSolver::solveFractionalKnapsack(size_t itemNum,
+                                                  uint32_t remainingCapacity) {
+
+  int32_t sum = 0;
+
+  for (size_t i = itemNum; i < items.size(); ++i) {
+
+    if ((remainingCapacity -= items[i].weight) > 0) {
+
+      sum += items[i].value;
+    }
+  }
+
   return sum;
 }
