@@ -146,15 +146,15 @@ KnapsackBBSolver::sumRemainingValuesThatFit(size_t itemNum,
                                             uint32_t remainingCapacity) {
 
   int32_t sum = 0;
-  size_t itemCount = instance->GetItemCnt();
 
-  for (size_t i = itemNum; i <= itemCount; ++i) {
+  for (size_t i = itemNum; i < items.size(); ++i) {
 
-    if (instance->GetItemWeight(i) < remainingCapacity) {
+    if (items[i].weight < remainingCapacity) {
 
-      sum += instance->GetItemValue(i);
+      sum += items[i].value;
     }
   }
+
   return sum;
 }
 
