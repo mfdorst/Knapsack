@@ -35,7 +35,7 @@ private:
   int32_t maximumRemainingValue;
 
   int32_t sumRemainingValuesThatFit(size_t itemNum, uint32_t capacity);
-  int32_t solveFractionalKnapsack(size_t itemNum, uint32_t capacity);
+  double solveFractionalKnapsack(size_t itemNum, uint32_t capacity);
 
   void findSolutions(size_t itemNum);
 

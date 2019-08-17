@@ -110,34 +110,33 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
 
     maximumRemainingValue += itemValue;
     break;
-  case UB2:
-
-  {
+  case UB2: {
     uint32_t remainingCapacity = capacity - takenWeight;
 
     auto remaining = sumRemainingValuesThatFit(itemNum + 1, remainingCapacity);
+
     if (takenValue + remaining < bestValue) {
       return;
     }
-  }
 
     findSolutions(itemNum + 1);
+
     break;
+  }
   case UB3: {
     uint32_t remainingCapacity = capacity - takenWeight;
 
-    auto valueUpperBound =
+    double valueUpperBound =
         takenValue + solveFractionalKnapsack(itemNum, remainingCapacity);
 
     if (valueUpperBound <= bestValue) {
-      int i = 3 + 4;
       return;
     }
-  }
 
-    currentSolution->DontTakeItem(items[itemNum].originalPosition);
     findSolutions(itemNum + 1);
+
     break;
+  }
   }
 }
 
@@ -158,18 +157,34 @@ KnapsackBBSolver::sumRemainingValuesThatFit(size_t itemNum,
   return sum;
 }
 
-int32_t KnapsackBBSolver::solveFractionalKnapsack(size_t itemNum,
-                                                  uint32_t remainingCapacity) {
+double KnapsackBBSolver::solveFractionalKnapsack(size_t itemNum,
+                                                 uint32_t capacity) {
 
-  int32_t sum = 0;
+  int32_t valueSum = 0, weightSum = 0;
+  size_t i;
 
-  for (size_t i = itemNum; i < items.size(); ++i) {
+  for (i = itemNum; i < items.size(); ++i) {
 
-    if ((remainingCapacity -= items[i].weight) > 0) {
+    if (weightSum + items[i].weight > capacity)
+      break;
 
-      sum += items[i].value;
-    }
+    weightSum += items[i].weight;
+    valueSum += items[i].value;
   }
 
-  return sum;
+  if (i == items.size()) {
+
+    // Everything fits!
+    return valueSum;
+  } else {
+
+    // Not every item fits.
+    // Compute the value per unit weight of the most valuable remaining item
+    double valuePerWeight = (double)items[i].value / items[i].weight;
+    // Take as much of the item as will fit in the knapasack
+    auto remainingCapacity = capacity - weightSum;
+    double fractionalValue = remainingCapacity * valuePerWeight;
+
+    return valueSum + fractionalValue;
+  }
 }
