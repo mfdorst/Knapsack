@@ -23,7 +23,8 @@ void KnapsackBBSolver::Solve(KnapsackInstance *instance_,
   bestValue = -1;
   takenValue = takenWeight = 0;
 
-  auto itemCount = instance->GetItemCnt();
+  itemCount = instance->GetItemCnt();
+  capacity = instance->GetCapacity();
 
   items.reserve(itemCount);
 
@@ -61,8 +62,8 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
   }
 
   // These are static so that the getters are only invoked once
-  size_t static capacity = instance->GetCapacity();
-  uint32_t static itemCount = instance->GetItemCnt();
+  capacity = instance->GetCapacity();
+  itemCount = instance->GetItemCnt();
 
   // If this is a leaf node (all items have been chosen)
   if (itemNum == itemCount) {

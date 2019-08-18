@@ -23,16 +23,17 @@ private:
   };
 
   UPPER_BOUND const upperBound;
-  KnapsackInstance *instance;
-  KnapsackSolution *currentSolution;
-  KnapsackSolution *bestSolution;
+  KnapsackInstance *instance = nullptr;
+  KnapsackSolution *currentSolution = nullptr;
+  KnapsackSolution *bestSolution = nullptr;
   std::chrono::high_resolution_clock::time_point startTime;
-  std::chrono::duration<double> maxDuration;
-  int32_t bestValue, takenWeight, takenValue;
+  std::chrono::duration<double> maxDuration = std::chrono::seconds(10);
+  int32_t bestValue = 0, takenWeight = 0, takenValue = 0, itemCount = 0;
   std::vector<Item> items;
+  uint32_t capacity = 0;
 
   // Used for upper bound 1
-  int32_t maximumRemainingValue;
+  int32_t maximumRemainingValue = 0;
 
   int32_t sumRemainingValuesThatFit(size_t itemNum, uint32_t capacity);
   double solveFractionalKnapsack(size_t itemNum, uint32_t capacity);
@@ -41,10 +42,7 @@ private:
 
 public:
   explicit KnapsackBBSolver(UPPER_BOUND const upperBound)
-      : instance(nullptr), currentSolution(nullptr), bestSolution(nullptr),
-        maxDuration(std::chrono::seconds(1000)), upperBound(upperBound),
-        maximumRemainingValue(0), bestValue(0), takenWeight(0),
-        takenValue(0) {}
+      : upperBound(upperBound) {}
 
   ~KnapsackBBSolver() = default;
 
