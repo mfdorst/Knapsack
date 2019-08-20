@@ -5,6 +5,7 @@ BF:  0 ms
 BT:  0 ms
 UB1: 0 ms
 UB2: 0 ms
+UB3: 0 ms
 
 n = 20
 ------
@@ -13,6 +14,7 @@ BF:  154 ms
 BT:   48 ms
 UB1:   6 ms
 UB2:   5 ms
+UB3:   0 ms
 
 n = 30
 ------
@@ -21,6 +23,7 @@ BF:  >10 s
 BT:  >10 s
 UB1: 6.7 s
 UB2: 6.3 s
+UB3:   0 ms
 
 n = 40
 ------
@@ -29,6 +32,7 @@ BF:  >1 min
 BT:  >1 min
 UB1: >1 min
 UB2: >1 min
+UB3:  1 ms
 
 Solved in 10 seconds
 --------------------
@@ -36,3 +40,5 @@ DP:  Solved n = 7500 in 9.7 seconds
 BF:  Solved n = 26   in 9.3 seconds
 BT:  Solved n = 27   in 7.5 seconds
 UB1: Solved n = 30   in 6.5 seconds
+UB2: Solved n = 30   in 6.3 seconds
+UB3: Solved n = 175  in  14 ms
