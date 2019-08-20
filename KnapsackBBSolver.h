@@ -22,6 +22,20 @@ private:
     int weight, value;
   };
 
+  class FractionalKnapsack {
+
+    std::vector<Item> const &items;
+    int32_t valueSum, weightSum, fractionalValue, fractionalWeight, capacity;
+    size_t fractionalItemNum;
+
+    void computeStartingFrom(size_t startingPoint);
+
+  public:
+    FractionalKnapsack(std::vector<Item> const &items, uint32_t capacity);
+    void untake(size_t itemNum);
+    int32_t getSolution() { return valueSum + fractionalValue; }
+  };
+
   UPPER_BOUND const upperBound;
   KnapsackInstance *instance = nullptr;
   KnapsackSolution *currentSolution = nullptr;
@@ -36,9 +50,8 @@ private:
   int32_t maximumRemainingValue = 0;
 
   int32_t sumRemainingValuesThatFit(size_t itemNum, uint32_t capacity);
-  double solveFractionalKnapsack(size_t itemNum, uint32_t capacity);
 
-  void findSolutions(size_t itemNum);
+  void findSolutions(size_t itemNum, FractionalKnapsack fractionalKnapsack);
 
 public:
   explicit KnapsackBBSolver(UPPER_BOUND const upperBound)

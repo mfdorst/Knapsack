@@ -10,6 +10,7 @@
 
 #include "KnapsackBBSolver.h"
 #include "Time.h"
+#include <cmath>
 
 void KnapsackBBSolver::Solve(KnapsackInstance *instance_,
                              KnapsackSolution *solution_) {
@@ -51,10 +52,12 @@ void KnapsackBBSolver::Solve(KnapsackInstance *instance_,
     });
   }
 
-  findSolutions(0);
+  // The initial fractional knapsack is computed upon construction
+  findSolutions(0, FractionalKnapsack(items, capacity));
 }
 
-void KnapsackBBSolver::findSolutions(size_t itemNum) {
+void KnapsackBBSolver::findSolutions(size_t itemNum,
+                                     FractionalKnapsack fractionalKnapsack) {
 
   // If time has run out, exit early
   if (timeSince(startTime) > maxDuration) {
@@ -89,7 +92,7 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
 
     currentSolution->TakeItem(items[itemNum].originalPosition);
 
-    findSolutions(itemNum + 1);
+    findSolutions(itemNum + 1, fractionalKnapsack);
 
     takenWeight -= itemWeight;
     takenValue -= itemValue;
@@ -107,7 +110,7 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
       maximumRemainingValue += itemValue;
       return;
     }
-    findSolutions(itemNum + 1);
+    findSolutions(itemNum + 1, fractionalKnapsack);
 
     maximumRemainingValue += itemValue;
     break;
@@ -120,21 +123,22 @@ void KnapsackBBSolver::findSolutions(size_t itemNum) {
       return;
     }
 
-    findSolutions(itemNum + 1);
+    findSolutions(itemNum + 1, fractionalKnapsack);
 
     break;
   }
   case UB3: {
     uint32_t remainingCapacity = capacity - takenWeight;
 
-    double valueUpperBound =
-        takenValue + solveFractionalKnapsack(itemNum, remainingCapacity);
+    fractionalKnapsack.untake(itemNum);
+
+    double valueUpperBound = fractionalKnapsack.getSolution();
 
     if (valueUpperBound <= bestValue) {
       return;
     }
 
-    findSolutions(itemNum + 1);
+    findSolutions(itemNum + 1, fractionalKnapsack);
 
     break;
   }
@@ -158,34 +162,78 @@ KnapsackBBSolver::sumRemainingValuesThatFit(size_t itemNum,
   return sum;
 }
 
-double KnapsackBBSolver::solveFractionalKnapsack(size_t itemNum,
-                                                 uint32_t capacity) {
+KnapsackBBSolver::FractionalKnapsack::FractionalKnapsack(
+    const std::vector<Item> &items, uint32_t capacity)
+    : items(items), capacity(capacity) {
 
-  int32_t valueSum = 0, weightSum = 0;
-  size_t i;
+  valueSum = weightSum = fractionalValue = fractionalWeight = 0;
 
-  for (i = itemNum; i < items.size(); ++i) {
+  fractionalItemNum = items.size();
 
-    if (weightSum + items[i].weight > capacity)
-      break;
+  computeStartingFrom(0);
+}
 
-    weightSum += items[i].weight;
-    valueSum += items[i].value;
+void KnapsackBBSolver::FractionalKnapsack::untake(size_t itemNum) {
+
+  // If the item being untaken is not in the fractional knapsack, do nothing.
+  if (itemNum > fractionalItemNum) {
+    return;
   }
 
-  if (i == items.size()) {
+  if (itemNum < fractionalItemNum) {
 
-    // Everything fits!
-    return valueSum;
+    weightSum -= items[itemNum].weight;
+    valueSum -= items[itemNum].value;
+
+    computeStartingFrom(fractionalItemNum);
+  }
+  if (itemNum == fractionalItemNum) {
+
+    computeStartingFrom(fractionalItemNum + 1);
+  }
+}
+
+void KnapsackBBSolver::FractionalKnapsack::computeStartingFrom(
+    size_t startingPoint) {
+
+  if (startingPoint >= items.size()) {
+    fractionalWeight = 0;
+    fractionalValue = 0;
+    return;
+  }
+
+  if (fractionalItemNum < startingPoint) {
+    fractionalItemNum = startingPoint;
+  }
+
+  Item item{};
+
+  // Add up as many items as will fit entirely
+  for (size_t i = startingPoint; i < items.size(); ++i) {
+
+    item = items[i];
+
+    if (weightSum + item.weight > capacity) {
+
+      fractionalItemNum = i;
+      break;
+    }
+
+    weightSum += item.weight;
+    valueSum += item.value;
+  }
+
+  // If all items fit (there is no fractional item)
+  if (fractionalItemNum == items.size()) {
+
+    fractionalWeight = 0;
+    fractionalValue = 0;
+
   } else {
 
-    // Not every item fits.
-    // Compute the value per unit weight of the most valuable remaining item
-    double valuePerWeight = (double)items[i].value / items[i].weight;
-    // Take as much of the item as will fit in the knapasack
-    auto remainingCapacity = capacity - weightSum;
-    double fractionalValue = remainingCapacity * valuePerWeight;
-
-    return valueSum + fractionalValue;
+    // Not every items fits. Compute the fractional value.
+    double valuePerWeight = (double)item.value / item.weight;
+    fractionalWeight = capacity - weightSum;
+    fractionalValue = std::floor(fractionalWeight * valuePerWeight);
   }
 }
